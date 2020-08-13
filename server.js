@@ -1,31 +1,36 @@
-const http = require('http');
 const express = require('express');
 const dotenv = require('dotenv');
-const path = require('path');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const host = 'localhost';
 const PORT = process.env.PORT || 5000;
 const app = express();
-
+var express_graphql = require('express-graphql').graphqlHTTP;
+var { buildSchema } = require('graphql');
 dotenv.config();
-app.use(express.json({ extended: false }));
-app.use(cors());
 
-const requestListener = function (req, res) {
-  res.writeHead(200);
-  res.end('Todo list server.');
+// GraphQL schema
+var schema = buildSchema(`
+    type Query {
+        message: String
+    }
+`);
+// Root resolver
+var root = {
+  message: () => 'Todo list server running',
 };
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, '..', 'client', 'build', 'index.html')
-    );
-  });
-}
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-  console.log(`Server is running on http://${host}:${port}`);
+app.use(
+  '/graphql',
+  express_graphql({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
+
+app.use(cors());
+app.listen(PORT, host, () => {
+  console.log(`Server is running on http://${host}:${PORT}`);
 });
