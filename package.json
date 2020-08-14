@@ -26,7 +26,10 @@
     "graphql": "^15.3.0",
     "graphql-server-express": "^1.4.1",
     "graphql-tools": "^6.0.18",
+    "join-monster": "^3.0.0-alpha.1",
     "nodemon": "^2.0.4",
-    "pg-promise": "^10.5.8"
+    "pg": "^8.3.0",
+    "pg-promise": "^10.5.8",
+    "pool": "^0.4.1"
   }
 }

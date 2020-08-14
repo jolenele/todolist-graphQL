@@ -7,11 +7,11 @@
 //   port: 5432,
 // });
 
-const psql = require('../database/dbAdapter').psql;
+const psql = require('../database/db').psql;
 exports.resolver = {
   Query: {
     users(_, args, ctx) {
-      const usersQuery = 'select id, name, email from users';
+      const usersQuery = 'select id, name from tasks';
       return psql.manyOrNone(usersQuery);
     },
   },
